@@ -1,0 +1,12 @@
+CREATE TABLE AIEnrichment AS
+SELECT
+CODE,
+ai_query("databricks-llama-2-70b-chat",
+Concat("Describe the following medical conditions in plain speak: 
+`LONG DESCRIPTION (VALID ICD-10 FY2024)`)) AS conditionDescriptionAI,
+ai_query("databricks-llama-2-70b-chat",
+Concat("Describe the symptoms associated with the medical condition after the colon in plain speak: ",
+`LONG DESCRIPTION (VALID ICD-10 FY2024)`)) as symptomsAI,
+CONCAT(symptomsAI, conditionDescriptionAI) AS concatA 
+FROM
+icd_10
